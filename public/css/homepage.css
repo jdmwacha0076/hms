@@ -1,0 +1,94 @@
+/* Ensure the layout adapts well to smaller screens */
+@media (max-width: 768px) {
+    .link-container {
+        margin-top: 10px;
+        padding: 15px;
+    }
+
+    .icon {
+        font-size: 2.5rem;
+        margin-top: 10px;
+    }
+
+    .link-text {
+        font-size: 1.2rem;
+    }
+
+    .details p {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .details strong {
+        font-size: 1.1rem;
+    }
+}
+
+.link-container {
+    background-color: #fff;
+    border: 1px solid #dddfe2;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.link-container:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+    font-size: 3.5rem;
+    color: #333;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 15px;
+}
+
+.details {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.details p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.details strong {
+    font-weight: bold;
+}
+
+hr {
+    border: 1px solid #dddfe2;
+    margin: 15px 0;
+}
+
+.card-hover {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-hover:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.bg-vacant {
+    background: linear-gradient(to right, #ffefba, #ffffff);
+}
+
+.bg-overdue {
+    background: linear-gradient(to right, #ff6a6a, #ffffff);
+}
+
+.bg-tenants {
+    background: linear-gradient(to right, #6ab04c, #ffffff);
+}

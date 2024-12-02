@@ -1,0 +1,53 @@
+body {
+    background-color: #d0f1c0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.btn-primary-custom {
+    background-color: #ADFF2F;
+    color: black;
+    border: none;
+}
+
+.btn-primary-custom:hover {
+    background-color: #ADFF2F;
+    color: black;
+}
+
+.card-custom {
+    background-color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    min-height: 30vh;
+}
+
+@media (max-width: 576px) {
+    .card-custom {
+        position: sticky;
+        top: 10px;
+        z-index: 1000;
+    }
+}
+
+.form-control-custom {
+    height: 50px;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control-custom:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.icon {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 5rem;
+    color: #131313;
+}

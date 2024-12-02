@@ -1,0 +1,1 @@
+Failed to send SMS to Paulina (255656345149). Response: {"code":116,"message":"Missing\/Invalid Reference Id"}

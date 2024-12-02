@@ -1,0 +1,10 @@
+.content {
+    float: left;
+    padding: 0.4em;
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.cardheader {
+    background-color: #c0c0c0;
+}
