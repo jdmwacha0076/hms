@@ -135,7 +135,7 @@
 
 
     <div class="contract-terms">
-        <p>Ninakuandikia kukutambulisha ya kuwa Ndugu, <strong>{{ $tenant_name }}</strong> mwenye kitambulisho cha <strong>______________</strong> chenye namba <strong>________________________________</strong>, kuwa ni mpangaji katika nyumba yangu iliyopo eneo la <strong>{{ $house_location }}</strong>, mtaa wa <strong>{{ $street_name }}</strong>, kiwanja namba <strong>{{ $plot_number }}</strong>. Mkataba wake umeanza rasmi tarehe <strong>{{ $start_date }}</strong> na unatarajiwa kumalizika tarehe <strong>{{ $end_date }}</strong>.</p>
+        <p>Ninakuandikia kukutambulisha ya kuwa Ndugu, <strong>{{ $tenant_name }}</strong> mwenye kitambulisho cha <strong>{{ $id_type }}</strong> chenye namba <strong>{{ $id_number }}</strong>, kuwa ni mpangaji katika nyumba yangu iliyopo eneo la <strong>{{ $house_location }}</strong>, mtaa wa <strong>{{ $street_name }}</strong>, kiwanja namba <strong>{{ $plot_number }}</strong>. Mkataba wake umeanza rasmi tarehe <strong>{{ $start_date }}</strong> na unatarajiwa kumalizika tarehe <strong>{{ $end_date }}</strong>.</p>
 
         <p>Kwa taratibu na sheria za usimamizi wa wakazi wa eneo hili, naomba ofisi yako impe nafasi mpangaji huyu kujitambulisha rasmi kwa uongozi wa serikali ya mtaa wa {{ $street_name }}.</p>
 

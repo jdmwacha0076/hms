@@ -9,7 +9,7 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tenant_name', 'phone_number'];
+    protected $fillable = ['tenant_name', 'phone_number', 'id_type', 'id_number'];
 
     public function contracts()
     {

@@ -65,6 +65,8 @@ class ExportContractController extends Controller
         $data = [
             'tenant_name' => $contract->tenant->tenant_name,
             'tenant_phone' => $contract->tenant->phone_number,
+            'id_type' => $contract->tenant->id_type,
+            'id_number' => $contract->tenant->id_number,
             'start_date' => \Carbon\Carbon::parse($contract->start_date)->format('d-m-Y'),
             'end_date' => \Carbon\Carbon::parse($contract->end_date)->format('d-m-Y'),
             'amount_paid' => $contract->amount_paid,

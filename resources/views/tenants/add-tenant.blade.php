@@ -52,6 +52,16 @@
                             <span id="phone_number_error"></span>
                         </div>
 
+                        <div class="form-group">
+                            <label for="id_type" class="font-weight-bold">3. Aina ya kitambulisho:</label>
+                            <input type="text" class="form-control" name="id_type" placeholder="Jaza aina ya kitambulisho" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_number" class="font-weight-bold">4. Namba ya kitambulisho:</label>
+                            <input type="text" class="form-control" name="id_number" placeholder="Jaza namba ya kitambulisho" required>
+                        </div>
+
                         <div class="text-left">
                             <button type="submit" class="btn btn-dark" id="add-tenant"><i class="fas fa-save"></i> Kamilisha usajili wa mpangaji</button>
                         </div>

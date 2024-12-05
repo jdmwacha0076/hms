@@ -12,6 +12,8 @@ class CreateTenantsTable extends Migration
             $table->id();
             $table->string('tenant_name');
             $table->string('phone_number');
+            $table->string(column: 'id_type');
+            $table->string('id_number');
             $table->timestamps();
         });
     }
