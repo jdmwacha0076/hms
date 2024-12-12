@@ -40,35 +40,15 @@ class SupervisorsController extends Controller
 
             return redirect()->back()->with('success', 'Msimamizi amesajiliwa kikamilifu.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Kuna tatizoqqqqqqqqqq: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Kuna tatizo: ' . $e->getMessage());
         }
     }
 
-        // For viewing the list of supervisors available
-        public function viewAllSuperVisors()
-        {
-            $supervisors = Supervisor::with('houses')->get();
-    
-            return view('supervisors.view-supervisors', compact('supervisors'));
-        }
+    // For viewing the list of supervisors available
+    public function viewAllSuperVisors()
+    {
+        $supervisors = Supervisor::with('houses')->get();
 
-        //For updating the house supervisor
-        public function update(Request $request)
-{
-    $validatedData = $request->validate([
-        'supervisor_id' => 'required|exists:supervisors,id',
-        'house_id' => 'required|exists:houses,id',
-    ]);
-
-    try {
-        $house = House::findOrFail($validatedData['house_id']);
-        $house->supervisor_id = $validatedData['supervisor_id'];
-        $house->save();
-
-        return redirect()->back()->with('success', 'Msimamizi alisajiliwa kwa nyumba hii.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Kuna tatizo: ' . $e->getMessage());
+        return view('supervisors.view-supervisors', compact('supervisors'));
     }
-}
-
 }

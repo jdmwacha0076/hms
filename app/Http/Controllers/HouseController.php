@@ -69,4 +69,29 @@ class HouseController extends Controller
 
         return view('houses.view-house', compact('houses', 'supervisors'));
     }
+
+    //For updating the house supervisor
+    public function updateHouse(Request $request)
+    {
+        $validatedData = $request->validate([
+            'house_id' => 'required|exists:houses,id',
+            'house_name' => 'required|string|max:255',
+            'house_owner' => 'required|string|max:255',
+            'house_location' => 'required|string|max:255',
+            'supervisor_id' => 'nullable|exists:supervisors,id',
+        ]);
+
+        try {
+            $house = House::findOrFail($validatedData['house_id']);
+            $house->house_name = $validatedData['house_name'];
+            $house->house_owner = $validatedData['house_owner'];
+            $house->house_location = $validatedData['house_location'];
+            $house->supervisor_id = $validatedData['supervisor_id'];
+            $house->save();
+
+            return redirect()->back()->with('success', 'Taarifa za nyumba zimehifadhiwa kwa mafanikio.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Kuna tatizo: ' . $e->getMessage());
+        }
+    }
 }

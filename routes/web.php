@@ -96,8 +96,11 @@ Route::middleware([
     // For saving the house details
     Route::post('/add-house', [HouseController::class, 'saveHouse'])->name('house.save');
 
-        //For viewing all the houses available
-        Route::get('/view-house', [HouseController::class, 'viewHouses'])->name('houses.view');
+    //For viewing all the houses available
+    Route::get('/view-house', [HouseController::class, 'viewHouses'])->name('houses.view');
+
+    //For updating the house details
+    Route::put('/supervisors/update', [HouseController::class, 'updateHouse'])->name('houses.update');
 
     ######################################################################## HOUSE CONTROLLER ####################################################################################################
 
@@ -181,11 +184,8 @@ Route::middleware([
     //For saving supervisors details
     Route::post('/supervisor/save', [SupervisorsController::class, 'saveSupervisors'])->name('supervisors.save');
 
-        //For viewing the list of supervisors available
-        Route::get('/view-supervisors', [SupervisorsController::class, 'viewAllSuperVisors'])->name('tenants.view-supervisors');
-
-        Route::put('/supervisors/update', [SupervisorsController::class, 'update'])->name('supervisors.update');
-
+    //For viewing the list of supervisors available
+    Route::get('/view-supervisors', [SupervisorsController::class, 'viewAllSuperVisors'])->name('tenants.view-supervisors');
 
     ####################################################################### SUPERVISORS CONTROLLER ############################################################################################
 
