@@ -39,12 +39,13 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr class="table-success">
-                                    <th>Na</th>
-                                    <th>Nyumba</th>
-                                    <th>Mmiliki</th>
-                                    <th>Eneo</th>
-                                    <th>Msimamizi</th>
-                                    <th>Action</th>
+                                    <th>Na:</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mmiliki</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Eneo</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mtaa</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Msimamizi</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Badili</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,6 +55,7 @@
                                     <td>{{ $house->house_name }}</td>
                                     <td>{{ $house->house_owner }}</td>
                                     <td>{{ $house->house_location }}</td>
+                                    <td>{{ $house->street_name }}</td>
                                     <td>{{ $house->supervisor ? $house->supervisor->supervisor_name : '-' }}</td>
                                     <td>
                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editSupervisorModal"
@@ -61,6 +63,7 @@
                                             data-house-name="{{ $house->house_name }}"
                                             data-house-owner="{{ $house->house_owner }}"
                                             data-house-location="{{ $house->house_location }}"
+                                            data-street-name="{{ $house->street_name }}"
                                             data-supervisor-id="{{ $house->supervisor ? $house->supervisor->id : '' }}">
                                             <i class="fas fa-edit"></i> Badili
                                         </button>
@@ -107,7 +110,11 @@
                         <input type="text" name="house_location" id="house_location" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="supervisor_id"><strong>4. Chagua msimamizi mpya (au acha tupu):</strong></label>
+                        <label for="street_name"><strong>4. Mtaa wa kiserikali:</strong></label>
+                        <input type="text" name="street_name" id="street_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supervisor_id"><strong>5. Chagua msimamizi mpya:</strong></label>
                         <select name="supervisor_id" id="supervisor_id" class="form-control">
                             <option value="">Bonyeza hapa kuchagua jina...</option>
                             @foreach($supervisors as $supervisor)
@@ -116,8 +123,8 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Badili</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Badili</button>
                     </div>
                 </form>
             </div>
@@ -139,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('house_name').value = button.getAttribute('data-house-name') || '';
             document.getElementById('house_owner').value = button.getAttribute('data-house-owner') || '';
             document.getElementById('house_location').value = button.getAttribute('data-house-location') || '';
+            document.getElementById('street_name').value = button.getAttribute('data-street-name') || '';
             document.getElementById('supervisor_id').value = button.getAttribute('data-supervisor-id') || '';
 
             modal.show();

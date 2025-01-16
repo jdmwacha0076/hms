@@ -86,7 +86,7 @@
 
                         <div class="form-group">
                             <label for="total_rent" class="font-weight-bold">8. Jumla ya kiasi cha kodi:</label>
-                            <input type="number" id="total_rent" class="form-control" readonly>
+                            <input type="number" id="total_rent" class="form-control" readonly value="100000"> <!-- Example value -->
                         </div>
 
                         <div class="form-group">
@@ -101,10 +101,13 @@
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-success" id="make-contract">
+                            <button type="submit" class="btn btn-success btn-sm" id="make-contract">
                                 <i class="fas fa-check"></i> Tengeneza mkataba
                             </button>
                         </div>
+
+
+
                     </form>
 
                 </div>
@@ -178,17 +181,33 @@
             submitButton.disabled = false;
         }
     }
+</script>
 
-    function validateForm() {
-        const totalRent = parseFloat(document.getElementById('total_rent').value);
-        const amountPaid = parseFloat(document.getElementById('amount_paid').value);
 
-        if (amountPaid > totalRent) {
-            alert('Kiasi kilicholipwa hakiwezi kuzidi kodi ya jumla!');
-            return false;
-        }
-        return true;
-    }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const totalRentInput = document.getElementById('total_rent');
+        const amountPaidInput = document.getElementById('amount_paid');
+        const amountRemainingInput = document.getElementById('amount_remaining');
+        const makeContractButton = document.getElementById('make-contract');
+        const amountError = document.getElementById('amount-error');
+
+        amountPaidInput.addEventListener('input', function() {
+            const totalRent = parseFloat(totalRentInput.value) || 0;
+            const amountPaid = parseFloat(amountPaidInput.value) || 0;
+
+            const amountRemaining = totalRent - amountPaid;
+            amountRemainingInput.value = amountRemaining > 0 ? amountRemaining : 0;
+
+            if (amountPaid > totalRent) {
+                amountError.style.display = 'block';
+                makeContractButton.disabled = true;
+            } else {
+                amountError.style.display = 'none';
+                makeContractButton.disabled = false;
+            }
+        });
+    });
 </script>
 
 @include('components.footer')

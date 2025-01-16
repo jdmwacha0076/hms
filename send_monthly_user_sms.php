@@ -22,7 +22,11 @@ try {
 
 $today = new DateTime();
 
-$stmt = $pdo->prepare("SELECT * FROM contracts WHERE start_date <= :today AND end_date >= :today");
+// Fetch active contracts
+$stmt = $pdo->prepare("
+    SELECT * FROM contracts 
+    WHERE start_date <= :today AND end_date >= :today AND contract_status = 'UNAENDELEA'
+");
 $stmt->execute(['today' => $today->format('Y-m-d')]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -33,89 +37,100 @@ if (empty($contracts)) {
 
 echo "Found " . count($contracts) . " active contracts.\n";
 
+// Fetch users with phone numbers
+$userStmt = $pdo->query("
+    SELECT id, name, phone_number FROM users 
+    WHERE phone_number IS NOT NULL
+");
+$users = $userStmt->fetchAll(PDO::FETCH_ASSOC);
 
-$consolidatedMessage = "";
-$recipients = [];
+foreach ($contracts as $contract) {
+    // Fetch house, room, tenant, and tenant phone details for the current contract
+    $stmt = $pdo->prepare("
+        SELECT h.house_name, h.house_owner, r.room_name, t.tenant_name, t.phone_number
+        FROM houses h
+        JOIN rooms r ON r.id = :room_id
+        JOIN tenants t ON t.id = :tenant_id
+        WHERE h.id = :house_id
+    ");
+    $stmt->execute([
+        'house_id' => $contract['house_id'],
+        'room_id' => $contract['room_id'], // Use the specific room_id for accurate room data
+        'tenant_id' => $contract['tenant_id']
+    ]);
+    $details = $stmt->fetch(PDO::FETCH_ASSOC);
 
-foreach ($contracts as $index => $contract) {
-
-    $stmt = $pdo->prepare("SELECT tenant_name, phone_number FROM tenants WHERE id = :tenant_id");
-    $stmt->execute(['tenant_id' => $contract['tenant_id']]);
-    $tenant = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $stmt = $pdo->prepare("SELECT house_name, house_owner, phone_number FROM houses WHERE id = :house_id");
-    $stmt->execute(['house_id' => $contract['house_id']]);
-    $house = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($tenant && $house && !empty($house['phone_number'])) {
+    if ($details) {
         $startDate = new DateTime($contract['start_date']);
+        $endDate = new DateTime($contract['end_date']);
         $daysDifference = $today->diff($startDate)->days;
 
         if ($daysDifference > 0 && $daysDifference % 30 === 0) {
             $monthsElapsed = (int)($daysDifference / 30);
-            $remainingMonths = $contract['contract_interval'] - $monthsElapsed;
+            $remainingMonths = max(0, $contract['contract_interval'] - $monthsElapsed);
 
+            // Updated tenant message with phone number
             $tenantMessage = sprintf(
-                "Habari mwenye nyumba, ndugu %s.\n\n" .
-                    "Mpangaji wako, ndugu %s, kutoka nyumba ya %s, amekamilisha mwezi wa %d katika mkataba wake wa kuishi, " .
-                    "ambao ulianza tarehe %s na utaisha tarehe %s. Kwa sasa amebakiza mwezi wa %d na kiasi baki cha kodi " .
-                    "anachodaiwa ni Tsh %.0f.\n\nTafadhali zingatia kufuatilia hili kabla ya tarehe ya mwisho wa mkataba. Asante.",
-                $house['house_owner'],
-                $tenant['tenant_name'],
-                $house['house_name'],
+                "Habari,\n\n" .
+                    "Mpangaji wako %s - %s kutoka nyumba ya %s chumba namba (%s) amekamilisha miezi %d katika mkataba wake " .
+                    "ambao ulianza tarehe %s na utamalizika tarehe %s. Kwa sasa amebakiza miezi %d na kiasi baki cha kodi anachodaiwa ni Tsh %.0f.\n\n" .
+                    "Tafadhali zingatia kufuatilia hili kabla ya tarehe ya mwisho wa mkataba. Asante.",
+                $details['tenant_name'],
+                $details['phone_number'],
+                $details['house_name'],
+                $details['room_name'],
                 $monthsElapsed,
                 $startDate->format('Y-m-d'),
-                (new DateTime($contract['end_date']))->format('Y-m-d'),
+                $endDate->format('Y-m-d'),
                 $remainingMonths,
                 $contract['amount_remaining']
             );
 
-            $consolidatedMessage .= $tenantMessage . "\n\n";
+            foreach ($users as $user) {
+                $postData = [
+                    'source_addr' => 'BOBTechWave',
+                    'encoding' => 0,
+                    'schedule_time' => '',
+                    'message' => $tenantMessage,
+                    'recipients' => [
+                        [
+                            'recipient_id' => (string)($user['id']),
+                            'dest_addr' => $user['phone_number']
+                        ]
+                    ]
+                ];
 
-            $recipients[] = [
-                'recipient_id' => (string)($index + 1),
-                'dest_addr' => $house['phone_number']
-            ];
+                $url = 'https://apisms.beem.africa/v1/send';
+
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt_array($ch, [
+                    CURLOPT_POST => TRUE,
+                    CURLOPT_RETURNTRANSFER => TRUE,
+                    CURLOPT_HTTPHEADER => [
+                        'Authorization: Basic ' . base64_encode("$api_key:$secret_key"),
+                        'Content-Type: application/json'
+                    ],
+                    CURLOPT_POSTFIELDS => json_encode($postData)
+                ]);
+
+                $response = curl_exec($ch);
+
+                if ($response === FALSE) {
+                    echo "Error sending message to " . $user['name'] . ": " . curl_error($ch) . "\n";
+                } else {
+                    echo "Message sent to " . $user['name'] . " (" . $user['phone_number'] . ").\n";
+                }
+
+                curl_close($ch);
+            }
         }
     } else {
-        echo "No valid phone number found for tenant ID " . $contract['tenant_id'] . " or house info.\n";
+        echo "No valid details for contract ID " . $contract['id'] . ".\n";
     }
 }
 
-if (empty(trim($consolidatedMessage))) {
-    echo "No messages to send.\n";
-    exit;
-}
+echo "All messages processed.\n";
 
-$postData = [
-    'source_addr' => 'Saron-4G',
-    'encoding' => 0,
-    'schedule_time' => '',
-    'message' => $consolidatedMessage,
-    'recipients' => $recipients
-];
-
-$url = 'https://apisms.beem.africa/v1/send';
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-curl_setopt_array($ch, [
-    CURLOPT_POST => TRUE,
-    CURLOPT_RETURNTRANSFER => TRUE,
-    CURLOPT_HTTPHEADER => [
-        'Authorization: Basic ' . base64_encode("$api_key:$secret_key"),
-        'Content-Type: application/json'
-    ],
-    CURLOPT_POSTFIELDS => json_encode($postData)
-]);
-
-$response = curl_exec($ch);
-
-if ($response === FALSE) {
-    echo "Error: " . curl_error($ch) . "\n";
-} else {
-    var_dump($response);
-}
-
-curl_close($ch);
+//Completed2

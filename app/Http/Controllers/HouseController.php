@@ -78,6 +78,7 @@ class HouseController extends Controller
             'house_name' => 'required|string|max:255',
             'house_owner' => 'required|string|max:255',
             'house_location' => 'required|string|max:255',
+            'street_name' => 'required|string|max:255',
             'supervisor_id' => 'nullable|exists:supervisors,id',
         ]);
 
@@ -86,6 +87,7 @@ class HouseController extends Controller
             $house->house_name = $validatedData['house_name'];
             $house->house_owner = $validatedData['house_owner'];
             $house->house_location = $validatedData['house_location'];
+            $house->street_name = $validatedData['street_name'];
             $house->supervisor_id = $validatedData['supervisor_id'];
             $house->save();
 

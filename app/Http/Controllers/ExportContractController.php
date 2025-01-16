@@ -65,6 +65,7 @@ class ExportContractController extends Controller
         $data = [
             'tenant_name' => $contract->tenant->tenant_name,
             'tenant_phone' => $contract->tenant->phone_number,
+            'business_name' => $contract->tenant->business_name,
             'id_type' => $contract->tenant->id_type,
             'id_number' => $contract->tenant->id_number,
             'start_date' => \Carbon\Carbon::parse($contract->start_date)->format('d-m-Y'),
@@ -79,6 +80,7 @@ class ExportContractController extends Controller
             'street_name' => $contract->house->street_name,
             'plot_number' => $contract->house->plot_number,
             'phone_number' => $contract->house->phone_number,
+            'room_name' => $contract->room->room_name,
             'supervisor_name' => $contract->house->supervisor ? $contract->house->supervisor->supervisor_name : 'N/A',
             'supervisor_phone_number' => $contract->house->supervisor ? $contract->house->supervisor->phone_number : 'N/A',
         ];

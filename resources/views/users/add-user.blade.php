@@ -91,12 +91,10 @@
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-dark w-100 py-2" id="add-user">
-                                <i class="fas fa-user-plus mr-2"></i> Kamilisha usajili wa mtumiaji
+                            <button type="submit" class="btn btn-dark btn-sm" id="add-user"><i class="fas fa-user-plus"></i> Kamilisha usajili wa mtumiaji
                             </button>
                         </div>
-                        </orm>
-
+                    </form>
                 </div>
 
             </div>

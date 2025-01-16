@@ -65,7 +65,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Tafuta</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Tafuta</button>
                             </div>
                         </div>
                     </form>
@@ -90,7 +90,7 @@
                                 <tr class="table-success">
                                     <th>&emsp;Na:</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mpangaji</th>
-                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Chumba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Hali</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Kuanza</th>
@@ -99,7 +99,7 @@
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pokea</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Baki</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Jumla</th>
-                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pakua</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pakua</th>
                                 </tr>
                             </thead>
                             <tbody>

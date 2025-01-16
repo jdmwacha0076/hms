@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <a href="{{ url('/view-supervisors') }}" class="btn btn-success"><i class="fas fa-eye"></i> Tazama wasimamizi</a>
+                        <a href="{{ url('/view-supervisors') }}" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Tazama wasimamizi</a>
                     </div>
 
                     <form method="POST" action="{{ route('supervisors.save') }}" onsubmit="disableButton('add-tenant')">
@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-dark" id="add-tenant"><i class="fas fa-save"></i> Kamilisha usajili wa msimamizi</button>
+                            <button type="submit" class="btn btn-dark btn-sm" id="add-tenant"><i class="fas fa-save"></i> Kamilisha usajili wa msimamizi</button>
                         </div>
 
                     </form>

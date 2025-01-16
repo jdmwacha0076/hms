@@ -43,6 +43,7 @@
                                     <th>Na:</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Jina</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Simu</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Biashara</th>
                                     <th>&emsp;&emsp;ID</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Namba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Badili</th>
@@ -55,6 +56,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $tenant->tenant_name }}</td>
                                     <td>{{ $tenant->phone_number }}</td>
+                                    <td>{{ $tenant->business_name }}</td>
                                     <td>{{ $tenant->id_type }}</td>
                                     <td>{{ $tenant->id_number }}</td>
                                     <td>
@@ -66,7 +68,6 @@
                                             data-id-number="{{ $tenant->id_number }}">
                                             <i class="fas fa-edit"></i> Badili
                                         </button>
-
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
@@ -75,7 +76,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Hakuna wapangaji waliosajiliwa.</td>
+                                    <td colspan="7" class="text-center">Hakuna wapangaji waliosajiliwa.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -119,8 +120,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Badili</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Badili</button>
                 </div>
             </div>
         </form>
@@ -143,8 +144,8 @@
                     <p><strong>Jina la mpangaji:</strong> <span id="deletetenantName"></span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-check"></i> Futa</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-check"></i> Futa</button>
                 </div>
             </div>
         </form>

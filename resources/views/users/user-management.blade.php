@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <td><a href="{{ url('/add-user') }}" class="btn btn-success"><i class="fas fa-user-plus"></i> Ongeza mtumiaji</a></td>
+                        <td><a href="{{ url('/add-user') }}" class="btn btn-success btn-sm"><i class="fas fa-user-plus"></i> Ongeza mtumiaji</a></td>
                     </div>
 
                     <div class="table-responsive">
@@ -62,7 +62,7 @@
                                     </td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateform" data-userid="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}" @if($user->id == $loggedInUserId || $user->status == 'disabled') disabled @endif>
+                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateform" data-userid="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}" @if($user->id == $loggedInUserId || $user->status == 'disabled') disabled @endif>
                                             <i class="fas fa-edit"></i> Badili
                                         </button>
                                     </td>
@@ -100,8 +100,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Badili</button>
+                        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Badili</button>
                     </div>
                 </form>
             </div>

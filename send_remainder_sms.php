@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients)
 {
     $postData = array(
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -58,7 +58,7 @@ function sendSms($api_key, $secret_key, $message, $recipients)
 $today = new DateTime();
 $oneWeekLater = (clone $today)->modify('+7 days');
 
-$stmt = $pdo->prepare("SELECT * FROM contracts WHERE end_date BETWEEN :today AND :one_week_later AND end_date > :today");
+$stmt = $pdo->prepare("SELECT * FROM contracts WHERE end_date BETWEEN :today AND :one_week_later AND end_date > :today AND contract_status = 'UNAENDELEA'");
 $stmt->execute(['today' => $today->format('Y-m-d'), 'one_week_later' => $oneWeekLater->format('Y-m-d')]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -148,3 +148,5 @@ foreach ($userPhoneNumbers as $entry) {
         echo "Failed to send SMS to " . $entry['recipient']['dest_addr'] . ".\n";
     }
 }
+
+//Completed

@@ -17,6 +17,7 @@ class TenantsController extends Controller
 
         $request->validate([
             'tenant_name' => 'required|string|max:255',
+            'business_name' => 'nullable|string|max:255',
             'phone_number' => 'required|string|max:15|regex:/^(?:255)[0-9]{9}$/',
         ], [
             'phone_number.regex' => 'Namba ya simu lazima iwe na muundo sahihi: Mfano: 255656345149',
@@ -30,6 +31,9 @@ class TenantsController extends Controller
             $tenant = Tenant::create([
                 'tenant_name' => $request->tenant_name,
                 'phone_number' => $request->phone_number,
+                'business_name' => $request->business_name,
+                'id_type' => $request->id_type,
+                'id_number' => $request->id_number,
             ]);
 
             return redirect()->back()->with('success', 'Umefanikiwa kumsajili ' . $tenant->tenant_name . ' kama mpangaji.');
