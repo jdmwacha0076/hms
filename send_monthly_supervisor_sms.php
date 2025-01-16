@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients)
 {
     $postData = [
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -70,6 +70,7 @@ $stmt = $pdo->prepare("
     JOIN rooms r ON c.room_id = r.id
     JOIN houses h ON c.house_id = h.id
     WHERE c.start_date <= :today AND c.end_date >= :today
+    AND contract_status = 'UNAENDELEA'
 ");
 $stmt->execute(['today' => $today->format('Y-m-d')]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);

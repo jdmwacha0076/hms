@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <a href="{{ url('/view-rooms') }}" class="btn btn-success"><i class="fas fa-eye"></i> Tazama nyumba</a>
+                        <a href="{{ url('/view-rooms') }}" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Tazama nyumba</a>
                     </div>
 
                     <form method="POST" action="{{ route('house.save') }}" onsubmit="disableButton('add-house')">
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="street_name" class="font-weight-bold">3. Mtaa nyumba ilipo:</label>
+                            <label for="street_name" class="font-weight-bold">3. Mtaa wa kiserikali:</label>
                             <input type="text" class="form-control" name="street_name" placeholder="Jaza jina la mtaa" required>
                         </div>
 
@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-dark" id="add-house"><i class="fas fa-save"></i> Kamilisha usajili wa nyumba</button>
+                            <button type="submit" class="btn btn-dark btn-sm" id="add-house"><i class="fas fa-save"></i> Kamilisha usajili wa nyumba</button>
                         </div>
                     </form>
 

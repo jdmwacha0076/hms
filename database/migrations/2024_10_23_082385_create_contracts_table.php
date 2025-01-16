@@ -23,9 +23,8 @@ class CreateContractsTable extends Migration
             $table->decimal('amount_remaining', 10, 2);
             $table->decimal('total', 10, 2);
 
-            // Add the contract_status column
             $table->enum('contract_status', ['BADO', 'UNAENDELEA', 'UMEISHA'])
-                ->default('BADO'); // Set default value as 'BADO'
+                ->default('BADO');
 
             $table->timestamps();
 

@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients, $reference_id)
 {
     $postData = array(
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -157,3 +157,5 @@ foreach ($supervisorPhoneNumbers as $entry) {
         echo "Failed to send SMS to " . $entry['recipient']['dest_addr'] . ".\n";
     }
 }
+
+//Completed

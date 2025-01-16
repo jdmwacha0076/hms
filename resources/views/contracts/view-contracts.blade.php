@@ -66,7 +66,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Tafuta</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Tafuta</button>
                             </div>
                         </div>
                         
@@ -171,7 +171,7 @@
                                                 name="amount_paid"
                                                 class="form-control"
                                                 id="amount_paid{{ $contract->id }}"
-                                                min="0"
+                                                min="1"
                                                 placeholder="Jaza kiasi"
                                                 required
                                                 oninput="validateAmount('{{ $contract->id }}', '{{ $contract->amount_remaining }}')">
@@ -179,8 +179,8 @@
                                         <div id="error-message{{ $contract->id }}" class="text-danger d-none">Kiasi cha kulipa hakiwezi kuzidi deni la sasa.</div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                                        <button type="submit" class="btn btn-success" id="submitBtn{{ $contract->id }}"><i class="fas fa-check"></i> Punguza</button>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                                        <button type="submit" class="btn btn-success btn-sm" id="submitBtn{{ $contract->id }}"><i class="fas fa-check"></i> Punguza</button>
                                     </div>
                                 </form>
                             </div>
@@ -214,7 +214,7 @@
                                     @endif
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
                                 </div>
                             </div>
                         </div>

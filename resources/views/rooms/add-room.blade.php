@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <a href="{{ url('/view-rooms') }}" class="btn btn-success"><i class="fas fa-eye"></i> Tazama vyumba</a>
+                        <a href="{{ url('/view-rooms') }}" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Tazama vyumba</a>
                     </div>
 
                     <form method="POST" action="{{ route('room.save') }}" onsubmit="disableButton('add-room')">
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-dark" id="add-room"><i class="fas fa-save"></i> Kamilisha usajili wa chumba</button>
+                            <button type="submit" class="btn btn-dark btn-sm" id="add-room"><i class="fas fa-save"></i> Kamilisha usajili wa chumba</button>
                         </div>
                     </form>
                 </div>

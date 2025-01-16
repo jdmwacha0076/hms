@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <a href="{{ url('/view-tenants') }}" class="btn btn-success"><i class="fas fa-eye"></i> Tazama wapangaji</a>
+                        <a href="{{ url('/view-tenants') }}" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Tazama wapangaji</a>
                     </div>
 
                     <form method="POST" action="{{ route('tenant.save') }}" onsubmit="disableButton('add-tenant')">
@@ -53,21 +53,24 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="id_type" class="font-weight-bold">3. Aina ya kitambulisho:</label>
+                            <label for="business_name" class="font-weight-bold">3. Jina la biashara:</label>
+                            <input type="text" class="form-control" name="business_name" placeholder="Jaza jina la biashara" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_type" class="font-weight-bold">4. Aina ya kitambulisho:</label>
                             <input type="text" class="form-control" name="id_type" placeholder="Jaza aina ya kitambulisho" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="id_number" class="font-weight-bold">4. Namba ya kitambulisho:</label>
+                            <label for="id_number" class="font-weight-bold">5. Namba ya kitambulisho:</label>
                             <input type="text" class="form-control" name="id_number" placeholder="Jaza namba ya kitambulisho" required>
                         </div>
 
                         <div class="text-left">
-                            <button type="submit" class="btn btn-dark" id="add-tenant"><i class="fas fa-save"></i> Kamilisha usajili wa mpangaji</button>
+                            <button type="submit" class="btn btn-dark btn-sm" id="add-tenant"><i class="fas fa-save"></i> Kamilisha usajili wa mpangaji</button>
                         </div>
-
                     </form>
-
                 </div>
             </div>
         </div>

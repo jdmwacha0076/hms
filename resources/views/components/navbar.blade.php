@@ -6,7 +6,7 @@
 
     <style>
         .bg-custom-color {
-            background-color: #ADFF2F;
+            background-color: #40E0D0;
         }
 
         .navbar-brand {
@@ -53,7 +53,7 @@
         }
 
         .dropdown-item:hover {
-            background-color: #ADFF2F;
+            background-color: #40E0D0;
             color: #fff;
         }
 
@@ -86,7 +86,7 @@
 
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-home"></i> Saroni Real Estate
+                <i class="fas fa-home"></i> Kiwango Complex
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon navbar-toggler-icon-custom"></span>
@@ -123,7 +123,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="roomsDropdown">
                             <a class="dropdown-item" href="{{ url('/add-room') }}">Sajili chumba</a>
-                            <a class="dropdown-item" href="{{ url('/view-rooms') }}">Tazama chumba</a>
+                            <a class="dropdown-item" href="{{ url('/view-rooms') }}">Tazama vyumba</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

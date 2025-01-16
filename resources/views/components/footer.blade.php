@@ -43,7 +43,7 @@
 
 <footer>
     <div>
-        <p><strong>Version 1.0</strong></p>
+        <p><strong>Version 1.2</strong></p>
     </div>
     <div>
         <a href="tel:+255656345149" title="Call"><i class="fas fa-phone"></i></a>

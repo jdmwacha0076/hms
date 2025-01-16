@@ -53,7 +53,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4" style="margin-top: 32px;">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Tafuta</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Tafuta</button>
                             </div>
                         </div>
                     </form>
