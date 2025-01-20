@@ -84,7 +84,7 @@ class ContractController extends Controller
                 'amount_paid' => $validatedData['amount_paid'],
                 'amount_remaining' => $amountRemaining,
                 'total' => $totalRent,
-                'contract_status' => 'UNAENDELEA', // Set the status as active
+                'contract_status' => 'UNAENDELEA',
             ]);
 
             if ($validatedData['amount_paid'] > 0) {
@@ -328,6 +328,14 @@ SMS;
         ]);
 
         $contract = Contract::findOrFail($id);
+
+        if ($contract->amount_remaining != 0) {
+            return redirect()->back()->with('error', 'Mkataba hauwezi kubadilishwa kwa sababu bado una kiasi kilichobaki.');
+        }
+
+        if ($contract->end_date >= now()) {
+            return redirect()->back()->with('error', 'Mkataba hauwezi kubadilishwa kwa sababu muda wa kumalizika bado haujapita.');
+        }
 
         $oldStatus = $contract->contract_status;
 
