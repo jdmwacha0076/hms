@@ -39,12 +39,13 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr class="table-success">
-                                    <th>Na</th>
-                                    <th>Nyumba</th>
-                                    <th>Mmiliki</th>
-                                    <th>Eneo</th>
-                                    <th>Msimamizi</th>
-                                    <th>Action</th>
+                                    <th>Na:</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mmiliki</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Eneo</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mtaa</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Msimamizi</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Badili</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,15 +55,20 @@
                                     <td>{{ $house->house_name }}</td>
                                     <td>{{ $house->house_owner }}</td>
                                     <td>{{ $house->house_location }}</td>
+                                    <td>{{ $house->street_name }}</td>
                                     <td>{{ $house->supervisor ? $house->supervisor->supervisor_name : '-' }}</td>
                                     <td>
                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editSupervisorModal"
                                             data-house-id="{{ $house->id }}"
-                                            data-supervisor-id="{{ $house->supervisor ? $house->supervisor->id : '' }}"
-                                            data-supervisor-name="{{ $house->supervisor ? $house->supervisor->supervisor_name : '' }}"><i class="fas fa-edit"></i>
-                                            Badili
+                                            data-house-name="{{ $house->house_name }}"
+                                            data-house-owner="{{ $house->house_owner }}"
+                                            data-house-location="{{ $house->house_location }}"
+                                            data-street-name="{{ $house->street_name }}"
+                                            data-supervisor-id="{{ $house->supervisor ? $house->supervisor->id : '' }}">
+                                            <i class="fas fa-edit"></i> Badili
                                         </button>
                                     </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -84,16 +90,32 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editSupervisorModalLabel">Badili msimamizi wa nyumba</h5>
+                <h5 class="modal-title" id="editSupervisorModalLabel">Badili taarifa za nyumba</h5>
             </div>
             <div class="modal-body">
-                <form action="{{ route('supervisors.update') }}" method="POST" id="updateSupervisorForm">
+                <form action="{{ route('houses.update') }}" method="POST" id="updateHouseForm">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="house_id" id="house_id">
                     <div class="form-group">
-                        <label for="supervisor_id"><strong>1. Chagua jina la msimamizi mpya:</strong></label>
-                        <select name="supervisor_id" id="supervisor_id" class="form-control" required>
+                        <label for="house_name"><strong>1. Jina la nyumba:</strong></label>
+                        <input type="text" name="house_name" id="house_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="house_owner"><strong>2. Mmiliki wa nyumba:</strong></label>
+                        <input type="text" name="house_owner" id="house_owner" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="house_location"><strong>3. Eneo la nyumba:</strong></label>
+                        <input type="text" name="house_location" id="house_location" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="street_name"><strong>4. Mtaa wa kiserikali:</strong></label>
+                        <input type="text" name="street_name" id="street_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supervisor_id"><strong>5. Chagua msimamizi mpya:</strong></label>
+                        <select name="supervisor_id" id="supervisor_id" class="form-control">
                             <option value="">Bonyeza hapa kuchagua jina...</option>
                             @foreach($supervisors as $supervisor)
                             <option value="{{ $supervisor->id }}">{{ $supervisor->supervisor_name }}</option>
@@ -101,8 +123,8 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Badili</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Badili</button>
                     </div>
                 </form>
             </div>
@@ -112,17 +134,30 @@
 
 <!-- Script to handle modal data and prevent multiple clicks -->
 <script>
-    $('#editSupervisorModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var houseId = button.data('house-id');
-        var supervisorId = button.data('supervisor-id');
-        var supervisorName = button.data('supervisor-name');
+document.addEventListener('DOMContentLoaded', function() {
+    const editButtons = document.querySelectorAll('[data-target="#editSupervisorModal"]');
+    const modalElement = document.getElementById('editSupervisorModal');
 
-        var modal = $(this);
-        modal.find('#house_id').val(houseId);
-        modal.find('#supervisor_id').val(supervisorId);
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = new bootstrap.Modal(modalElement);
+
+            document.getElementById('house_id').value = button.getAttribute('data-house-id');
+            document.getElementById('house_name').value = button.getAttribute('data-house-name') || '';
+            document.getElementById('house_owner').value = button.getAttribute('data-house-owner') || '';
+            document.getElementById('house_location').value = button.getAttribute('data-house-location') || '';
+            document.getElementById('street_name').value = button.getAttribute('data-street-name') || '';
+            document.getElementById('supervisor_id').value = button.getAttribute('data-supervisor-id') || '';
+
+            modal.show();
+        });
     });
-</script>
 
+    modalElement.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('updateHouseForm').reset();
+    });
+});
+
+</script>
 
 @include('components.footer')

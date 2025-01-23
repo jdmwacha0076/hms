@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients)
 {
     $postData = [
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -57,7 +57,7 @@ function sendSms($api_key, $secret_key, $message, $recipients)
 
 $oneMonthFromNow = (new DateTime())->modify('+1 month');
 
-$stmt = $pdo->prepare("SELECT * FROM contracts WHERE end_date = :oneMonthFromNow");
+$stmt = $pdo->prepare("SELECT * FROM contracts WHERE end_date = :oneMonthFromNow AND contract_status = 'UNAENDELEA'");
 $stmt->execute(['oneMonthFromNow' => $oneMonthFromNow->format('Y-m-d')]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

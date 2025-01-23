@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients)
 {
     $postData = array(
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -58,8 +58,31 @@ function sendSms($api_key, $secret_key, $message, $recipients)
 $today = new DateTime();
 $oneWeekLater = (clone $today)->modify('+7 days');
 
-$stmt = $pdo->prepare("SELECT * FROM contracts WHERE end_date BETWEEN :today AND :one_week_later AND end_date > :today");
-$stmt->execute(['today' => $today->format('Y-m-d'), 'one_week_later' => $oneWeekLater->format('Y-m-d')]);
+$stmt = $pdo->prepare("
+    SELECT 
+        c.id AS contract_id, 
+        c.end_date, 
+        c.start_date, 
+        c.amount_remaining, 
+        t.id AS tenant_id, 
+        t.phone_number, 
+        t.tenant_name, 
+        h.house_name, 
+        r.room_name
+    FROM 
+        contracts c
+    JOIN tenants t ON c.tenant_id = t.id
+    JOIN houses h ON c.house_id = h.id
+    JOIN rooms r ON c.room_id = r.id
+    WHERE 
+        c.end_date BETWEEN :today AND :one_week_later 
+        AND c.end_date > :today 
+        AND c.contract_status = 'UNAENDELEA'
+");
+$stmt->execute([
+    'today' => $today->format('Y-m-d'),
+    'one_week_later' => $oneWeekLater->format('Y-m-d')
+]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (empty($contracts)) {
@@ -71,46 +94,48 @@ echo "Found " . count($contracts) . " contracts expiring in the next week.\n";
 
 $tenantPhoneNumbers = [];
 $tenantMessagesForAdmin = [];
+
 foreach ($contracts as $contract) {
-    $stmt = $pdo->prepare("SELECT phone_number, tenant_name FROM tenants WHERE id = :tenant_id");
-    $stmt->execute(['tenant_id' => $contract['tenant_id']]);
-    $tenant = $stmt->fetch(PDO::FETCH_ASSOC);
+    $endDate = new DateTime($contract['end_date']);
+    $startDate = new DateTime($contract['start_date']);
+    $daysLeft = $endDate->diff($today)->days;
 
-    if ($tenant && !empty($tenant['phone_number'])) {
-        $endDate = new DateTime($contract['end_date']);
-        $startDate = new DateTime($contract['start_date']);
-        $daysLeft = $endDate->diff($today)->days;
+    $tenantMessage = sprintf(
+        "Ndugu %s, mkataba wako wa upangaji wa nyumba %s (chumba namba %s) ulianza tarehe %s na utafika kikomo tarehe %s. Umebakiwa na siku %d mpaka kufikia mwisho wa mkataba wako. Kiasi cha kodi ambacho bado unadaiwa ni Tsh %s. Tafadhali wasiliana na mmiliki/msimamizi kwa taratibu zaidi.",
+        $contract['tenant_name'],
+        $contract['house_name'],
+        $contract['room_name'],
+        $startDate->format('Y-m-d'),
+        $endDate->format('Y-m-d'),
+        $daysLeft,
+        number_format($contract['amount_remaining'], 2)
+    );
 
-        $tenantMessage = sprintf(
-            "Ndugu %s, mkataba wako wa upangaji ulianza siku ya tarehe %s na utafika kikomo chake siku ya tarehe %s. Ikiwa tumebakiwa na siku %d, ujumbe huu unakukumbusha kuwasiliana na mmiliki/msimamizi wa nyumba kwa taratibu zaidi.",
-            $tenant['tenant_name'],
-            $startDate->format('Y-m-d'),
-            $endDate->format('Y-m-d'),
-            $daysLeft
-        );
+    $tenantMessagesForAdmin[] = sprintf(
+        "%s (%s) kutoka nyumba ya %s, chumba namba %s, mkataba wake ulianza tarehe %s na utafika kikomo tarehe %s. Amebakiza idadi ya siku %d mpaka kufikia ukomo wa mkataba wake. Kiasi cha kodi ambacho anadaiwa ni Tsh %s.",
+        $contract['tenant_name'],
+        $contract['phone_number'],
+        $contract['house_name'],
+        $contract['room_name'],
+        $startDate->format('Y-m-d'),
+        $endDate->format('Y-m-d'),
+        $daysLeft,
+        number_format($contract['amount_remaining'], 2)
+    );
 
-        $tenantMessagesForAdmin[] = sprintf(
-            "%s mkataba wake ulianza siku ya tarehe %s, na utafika kikomo siku ya tarehe %s, kuna idadi ya siku %d kuweza kufunga mkataba huu. Tafadhali unakumbushwa kufuatilia hili.",
-            $tenant['tenant_name'],
-            $startDate->format('Y-m-d'),
-            $endDate->format('Y-m-d'),
-            $daysLeft
-        );
+    $recipient = [
+        'recipient_id' => $contract['tenant_id'],
+        'dest_addr' => $contract['phone_number'],
+    ];
 
-        $recipient = [
-            'recipient_id' => $contract['tenant_id'],
-            'dest_addr' => $tenant['phone_number'],
-        ];
-
-        $tenantPhoneNumbers[] = ['message' => $tenantMessage, 'recipient' => $recipient];
-        echo "Found phone number for tenant ID " . $contract['tenant_id'] . ": " . $tenant['phone_number'] . "\n";
-    }
+    $tenantPhoneNumbers[] = ['message' => $tenantMessage, 'recipient' => $recipient];
+    echo "Prepared SMS for tenant ID " . $contract['tenant_id'] . ": " . $contract['phone_number'] . "\n";
 }
 
 if (!empty($tenantMessagesForAdmin)) {
-    $adminMessage = "Habari ndugu, tunakutaarifa kuwa:\n" . implode("\n", $tenantMessagesForAdmin);
+    $adminMessage = "Habari ndugu, tunakutaarifu kuwa:\n" . implode("\n", $tenantMessagesForAdmin);
 } else {
-    $adminMessage = "No expiring contracts found.";
+    $adminMessage = "Hakuna mikataba inayokaribia kuisha.";
 }
 
 $userPhoneNumbers = [];
@@ -133,9 +158,9 @@ foreach ($tenantPhoneNumbers as $entry) {
     $response = sendSms($api_key, $secret_key, $entry['message'], [$entry['recipient']]);
 
     if ($response) {
-        var_dump($response);
+        echo "SMS sent to tenant " . $entry['recipient']['dest_addr'] . "\n";
     } else {
-        echo "Failed to send SMS to " . $entry['recipient']['dest_addr'] . ".\n";
+        echo "Failed to send SMS to tenant " . $entry['recipient']['dest_addr'] . ".\n";
     }
 }
 
@@ -143,8 +168,10 @@ foreach ($userPhoneNumbers as $entry) {
     $response = sendSms($api_key, $secret_key, $entry['message'], [$entry['recipient']]);
 
     if ($response) {
-        var_dump($response);
+        echo "SMS sent to admin " . $entry['recipient']['dest_addr'] . "\n";
     } else {
-        echo "Failed to send SMS to " . $entry['recipient']['dest_addr'] . ".\n";
+        echo "Failed to send SMS to admin " . $entry['recipient']['dest_addr'] . ".\n";
     }
 }
+
+echo "Process completed.\n";

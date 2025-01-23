@@ -1,5 +1,5 @@
 body {
-    background-color: #d0f1c0;
+    background-color: #64cac0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -7,13 +7,13 @@ body {
 }
 
 .btn-primary-custom {
-    background-color: #ADFF2F;
+    background-color: #40E0D0;
     color: black;
     border: none;
 }
 
 .btn-primary-custom:hover {
-    background-color: #ADFF2F;
+    background-color: #40E0D0;
     color: black;
 }
 

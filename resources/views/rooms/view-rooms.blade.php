@@ -39,14 +39,14 @@
                         <table class="table table-striped table-bordered">
                             <thead class="table-light">
                                 <tr class="table-success">
-                                    <th>#</th>
-                                    <th>Nyumba</th>
-                                    <th>Mmiliki</th>
-                                    <th>Eneo</th>
-                                    <th>Msimamizi</th>
-                                    <th>Vyumba</th>
-                                    <th>Kodi</th>
-                                    <th>Badili</th>
+                                    <th>Na:</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mmiliki</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Eneo</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Msimamizi</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;Vyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;Kodi</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Badili</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,7 +71,7 @@
                                     <td>{{ $loop->first ? $house->house_location : '' }}</td>
                                     <td>{{ $loop->first ? ($house->supervisor ? $house->supervisor->supervisor_name : 'N/A') : '' }}</td>
                                     <td>{{ $room->room_name }}</td>
-                                    <td>{{ number_format($room->rent, 2) }}</td>
+                                    <td>{{ number_format($room->rent) }}</td>
                                     <td>
                                         <button class="btn btn-secondary btn-sm"
                                             data-toggle="modal"
@@ -124,8 +124,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                        <button type="submit" id="submitBtn" class="btn btn-success">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                        <button type="submit" id="submitBtn" class="btn btn-success btn-sm">
                             <i class="fas fa-check"></i> Badili
                         </button>
                     </div>

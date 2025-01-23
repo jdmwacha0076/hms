@@ -4,7 +4,7 @@
     <title>Pakua Mikataba | Usimamizi wa Nyumba</title>
     <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 @include('components.navbar')
@@ -65,7 +65,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Tafuta</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Tafuta</button>
                             </div>
                         </div>
                     </form>
@@ -85,12 +85,12 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="export-contracts">
                             <thead>
                                 <tr class="table-success">
                                     <th>&emsp;Na:</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mpangaji</th>
-                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Nyumba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Chumba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Hali</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Kuanza</th>
@@ -99,7 +99,7 @@
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pokea</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Baki</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Jumla</th>
-                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pakua</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Pakua</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -172,3 +172,15 @@
         </div>
     </div>
 </div>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#export-contracts').DataTable({
+            "paging": false,
+            "searching": true
+        });
+    });
+</script>

@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="d-flex justify-content-left mb-3">
-                        <a href="{{ url('/completed-contracts') }}" class="btn btn-success"><i class="fas fa-eye"></i> Mikataba iliyokamilika</a>
+                        <a href="{{ url('/completed-contracts') }}" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Mikataba iliyokamilika</a>
                     </div>
 
                     <form action="{{ route('contracts.store') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButton('upload-contract')">
@@ -65,7 +65,7 @@
                             <label for="uploaded_file" class="font-weight-bold">4. Pakia mkataba uliyosainiwa</label>
                             <input type="file" id="uploaded_file" name="uploaded_file" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-dark" id="upload-contract"><i class="fas fa-save"></i> Kamilisha kupakia</button>
+                        <button type="submit" class="btn btn-dark btn-sm" id="upload-contract"><i class="fas fa-save"></i> Kamilisha kupakia</button>
                     </form>
 
                 </div>

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\User;
 use App\Models\House;
 use App\Models\Tenant;
 use App\Models\Contract;
-use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use App\Models\UploadedContract;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Jobs\SendSmsJob;
 
 class ContractController extends Controller
 {
@@ -60,14 +60,13 @@ class ContractController extends Controller
             return redirect()->back()->with('error', 'Chumba hiki hakihusiani na nyumba iliyochaguliwa.');
         }
 
-        $existingContract = Contract::where('room_id', $validatedData['room_id'])
-            ->where('house_id', $validatedData['house_id'])
-            ->where('tenant_id', '!=', $validatedData['tenant_id'])
-            ->where('end_date', '>=', now())
+        // Check for an active contract for the same room
+        $existingActiveContract = Contract::where('room_id', $validatedData['room_id'])
+            ->where('contract_status', 'UNAENDELEA')
             ->first();
 
-        if ($existingContract) {
-            return redirect()->back()->with('error', 'Chumba hiki tayari kinatumika na mkataba mwingine. Tafadhali chagua chumba kingine.');
+        if ($existingActiveContract) {
+            return redirect()->back()->with('error', 'Chumba hiki tayari kina mkataba unaoendelea. Tafadhali chagua chumba kingine.');
         }
 
         $totalRent = $room->rent * $validatedData['duration'];
@@ -85,6 +84,7 @@ class ContractController extends Controller
                 'amount_paid' => $validatedData['amount_paid'],
                 'amount_remaining' => $amountRemaining,
                 'total' => $totalRent,
+                'contract_status' => 'UNAENDELEA',
             ]);
 
             if ($validatedData['amount_paid'] > 0) {
@@ -96,6 +96,29 @@ class ContractController extends Controller
             }
 
             $tenantName = $contract->tenant->tenant_name;
+            $tenantPhone = $contract->tenant->phone_number;
+            $businessName = $contract->tenant->business_name;
+            $houseName = $contract->house->house_name;
+            $roomName = $contract->room->room_name;
+            $createdBy = Auth::user()->name;
+
+            $message = <<<SMS
+Ndugu, Pokea taarifa za mkataba mpya:
+Aliyetengeneza: $createdBy
+Mpangaji: $tenantName
+Biashara: $businessName
+Nyumba: $houseName
+Chumba: $roomName
+Tarehe ya kuanza: {$endDate->format('d-m-Y')}
+Tarehe ya mwisho: {$endDate->format('d-m-Y')}
+Muda: Miezi {$validatedData['duration']}
+Jumla ya kodi: $totalRent TZS
+Kiasi kilicholipwa: {$validatedData['amount_paid']} TZS
+Kiasi kilichobaki: $amountRemaining TZS
+SMS;
+
+            $smsJob = new SendSmsJob([$tenantPhone], $message);
+            $smsJob->handle();
 
             return redirect()->back()->with('success', "Umefanikiwa kutengeneza mkataba wa $tenantName.");
         } catch (\Exception $e) {
@@ -146,6 +169,7 @@ class ContractController extends Controller
         $contract = Contract::findOrFail($id);
 
         $amountPaid = $request->input('amount_paid');
+        $amountReduced = number_format($contract->amount_paid, 0);
         $contract->amount_paid += $amountPaid;
         $contract->amount_remaining = $contract->total - $contract->amount_paid;
         $contract->save();
@@ -157,6 +181,34 @@ class ContractController extends Controller
         ]);
 
         $tenantName = $contract->tenant->tenant_name;
+        $businessName = $contract->tenant->business_name;
+        $houseName = $contract->house->house_name;
+        $roomName = $contract->room->room_name;
+        $amountRemaining = number_format($contract->amount_remaining);
+        $totalRent = number_format($contract->total);
+        $startDate = $contract->start_date;
+        $endDate = $contract->end_date;
+        $contractInterval = $contract->contract_interval;
+        $updatedBy = Auth::user()->name;
+
+        $message = "Kodi imelipwa:\n"
+            . "Aliyejaza: $updatedBy\n"
+            . "Mpangaji: $tenantName\n"
+            . "Biashara: $businessName\n"
+            . "Nyumba: $houseName\n"
+            . "Chumba: $roomName\n"
+            . "Leo kalipa: $amountPaid\n"
+            . "Ameshalipa: $amountReduced\n"
+            . "Imebaki: $amountRemaining\n"
+            . "Jumla: $totalRent\n"
+            . "Muda: Miezi $contractInterval\n"
+            . "Anza: $startDate\n"
+            . "Mwisho: $endDate.";
+
+        $phoneNumbers = User::pluck('phone_number')->toArray();
+
+        $smsJob = new SendSmsJob($phoneNumbers, $message);
+        $smsJob->handle();
 
         return redirect()->back()->with('success', "Umefanikiwa kupunguza kodi katika mkataba wa $tenantName.");
     }
@@ -203,7 +255,7 @@ class ContractController extends Controller
             'house_id' => 'required|exists:houses,id',
             'room_id' => 'required|exists:rooms,id',
             'tenant_id' => 'required|exists:tenants,id',
-            'uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480'
         ]);
 
         try {
@@ -276,6 +328,14 @@ class ContractController extends Controller
         ]);
 
         $contract = Contract::findOrFail($id);
+
+        if ($contract->amount_remaining != 0) {
+            return redirect()->back()->with('error', 'Mkataba hauwezi kubadilishwa kwa sababu bado una kiasi kilichobaki.');
+        }
+
+        if ($contract->end_date >= now()) {
+            return redirect()->back()->with('error', 'Mkataba hauwezi kubadilishwa kwa sababu muda wa kumalizika bado haujapita.');
+        }
 
         $oldStatus = $contract->contract_status;
 

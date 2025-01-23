@@ -42,7 +42,10 @@
                                 <tr class="table-success">
                                     <th>Na:</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Jina</th>
-                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;Namba</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;Simu</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Biashara</th>
+                                    <th>&emsp;&emsp;ID</th>
+                                    <th>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Namba</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Badili</th>
                                     <th>&emsp;&emsp;&emsp;&emsp;&emsp;Futa</th>
                                 </tr>
@@ -53,9 +56,18 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $tenant->tenant_name }}</td>
                                     <td>{{ $tenant->phone_number }}</td>
+                                    <td>{{ $tenant->business_name }}</td>
+                                    <td>{{ $tenant->id_type }}</td>
+                                    <td>{{ $tenant->id_number }}</td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ $tenant->id }}" data-name="{{ $tenant->tenant_name }}"
-                                            data-phone="{{ $tenant->phone_number }}"><i class="fas fa-edit"></i> Badili</button>
+                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal"
+                                            data-id="{{ $tenant->id }}"
+                                            data-name="{{ $tenant->tenant_name }}"
+                                            data-phone="{{ $tenant->phone_number }}"
+                                            data-id-type="{{ $tenant->id_type }}"
+                                            data-id-number="{{ $tenant->id_number }}">
+                                            <i class="fas fa-edit"></i> Badili
+                                        </button>
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
@@ -64,7 +76,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Hakuna wapangaji waliosajiliwa.</td>
+                                    <td colspan="7" class="text-center">Hakuna wapangaji waliosajiliwa.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -98,10 +110,18 @@
                         <input type="text" class="form-control" id="phone" name="tenant_phone" required pattern="[0-9]{12}">
                         <small id="phone_number_error" class="form-text"></small>
                     </div>
+                    <div class="form-group">
+                        <label for="idType" class="font-weight-bold">3. Aina ya Kitambulisho:</label>
+                        <input type="text" class="form-control" id="idType" name="id_type" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idNumber" class="font-weight-bold">4. Namba ya Kitambulisho:</label>
+                        <input type="text" class="form-control" id="idNumber" name="id_number" required>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Badili</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Badili</button>
                 </div>
             </div>
         </form>
@@ -124,8 +144,8 @@
                     <p><strong>Jina la mpangaji:</strong> <span id="deletetenantName"></span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-check"></i> Futa</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Funga</button>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-check"></i> Futa</button>
                 </div>
             </div>
         </form>
@@ -149,11 +169,15 @@
         var id = button.data('id');
         var name = button.data('name');
         var phone = button.data('phone');
+        var idType = button.data('id-type');
+        var idNumber = button.data('id-number');
 
         var modal = $(this);
         modal.find('#edittenantId').val(id);
         modal.find('#tenantName').val(name);
         modal.find('#phone').val(phone);
+        modal.find('#idType').val(idType);
+        modal.find('#idNumber').val(idNumber);
 
         modal.find('form').attr('action', "{{ url('/tenant') }}/" + id);
     });

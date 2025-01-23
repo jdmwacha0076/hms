@@ -23,7 +23,7 @@ try {
 function sendSms($api_key, $secret_key, $message, $recipients)
 {
     $postData = [
-        'source_addr' => 'Saron-4G',
+        'source_addr' => 'BOBTechWave',
         'encoding' => 0,
         'schedule_time' => '',
         'message' => $message,
@@ -57,7 +57,7 @@ function sendSms($api_key, $secret_key, $message, $recipients)
 
 $today = new DateTime();
 
-$stmt = $pdo->prepare("SELECT * FROM contracts WHERE start_date <= :today AND end_date >= :today");
+$stmt = $pdo->prepare("SELECT * FROM contracts WHERE start_date <= :today AND end_date >= :today AND contract_status = 'UNAENDELEA'");
 $stmt->execute(['today' => $today->format('Y-m-d')]);
 $contracts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
