@@ -109,7 +109,8 @@
 
         <p>Ndugu, <strong>{{ $house_owner }}</strong> mwenye namba ya simu <strong>{{ $phone_number }}</strong> akiwa kama mmiliki/msimamizi halali wa nyumba iliyopo eneo
             la <strong>{{ $house_location }}</strong> katika mtaa wa <strong>{{ $street_name }}</strong>.
-            Pamoja na Ndugu <strong>{{ $tenant_name }}</strong> mwenye namba za simu <strong>{{ $tenant_phone }}</strong> na jina la biashara <strong>{{ $business_name }}</strong> akiwa kama mpangaji wa chumba kwa
+            Pamoja na Ndugu <strong>{{ $tenant_name }}</strong> mwenye Kitambulisho cha <strong>{{ $id_type }}</strong> kikiwa na namba <strong>{{ $id_number }}</strong>, 
+            namba ya simu <strong>{{ $tenant_phone }}</strong> na jina la biashara <strong>{{ $business_name }}</strong> akiwa kama mpangaji wa chumba kwa
             shughuli za kibiashara katika nyumba tajwa hapo juu.</p>
 
         <p>Kwa kuwa pande zote mbili, yaani mmiliki/msimamizi ameonesha nia ya kumpangishia mpangaji chumba namba <strong>{{ $room_name }}</strong>
