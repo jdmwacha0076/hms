@@ -113,7 +113,7 @@ foreach ($contracts as $contract) {
         $tenantPhoneNumbers[] = ['message' => $tenantMessage, 'recipient' => $recipient];
 
         $supervisorMessage = sprintf(
-            "Habari %s, Mkataba wa ndugu %s katika chumba %s ulianza tarehe %s na utafika kikomo tarehe %s. Tafadhali wasiliana na mmiliki/mpangishaji na mpangaji kwa hatua zaidi.",
+            "Habari %s, Mkataba wa ndugu %s katika chumba namba %s ulianza tarehe %s na utafika kikomo tarehe %s. Tafadhali wasiliana na mmiliki/mpangishaji na mpangaji kwa hatua zaidi.",
             $supervisor['supervisor_name'],
             $tenant['tenant_name'],
             $contract['room_id'],
